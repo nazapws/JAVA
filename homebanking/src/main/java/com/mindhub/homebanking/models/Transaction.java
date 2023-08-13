@@ -46,7 +46,6 @@ public class Transaction {
         this.transactionId = transactionId;
     }
 
-
     public TransactionType getType() {
         return type;
     }
