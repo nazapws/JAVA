@@ -11,8 +11,10 @@ import org.springframework.context.annotation.Bean;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.mindhub.homebanking.models.CardColor.*;
 import static com.mindhub.homebanking.models.TransactionType.CREDIT;
 import static com.mindhub.homebanking.models.TransactionType.DEBIT;
+
 
 @SpringBootApplication
 public class HomebankingApplication {
@@ -22,7 +24,7 @@ public class HomebankingApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(ClientLoanRepository clientLoanRepository, LoanRepository loanRepository, ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository){
+	public CommandLineRunner initData(CardRepository cardRepository, ClientLoanRepository clientLoanRepository, LoanRepository loanRepository, ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository){
 		return (args) -> {
 			Client client = new Client("Melba", "Morel", "melba@mindhub.com");
 			Client client1 = new Client("Nazareth", "Guia", "nazguiag@gmail.com");
@@ -81,6 +83,19 @@ public class HomebankingApplication {
 			clientLoanRepository.save(loanMelba1);
 			clientLoanRepository.save(loanNaza);
 			clientLoanRepository.save(loanNaza1);
+
+			Card cardMelba1 = new Card(client.getFirstName()+" "+client.getLastName(), CardType.DEBIT, GOLD,"1234-1234-1234-1234", 234, LocalDate.now(), LocalDate.now().plusYears(5));
+			Card cardMelba2 = new Card(client.getFirstName()+" "+client.getLastName(), CardType.CREDIT, TITANIUM,"1234-1234-1234-1235", 235, LocalDate.now(), LocalDate.now().plusYears(5));
+			Card cardNaza1 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.CREDIT,  SILVER,"1222-2222-2222-2222", 342, LocalDate.now(), LocalDate.now().plusYears(5));
+
+			client.addCard(cardMelba1);
+			client.addCard(cardMelba2);
+			client1.addCard(cardNaza1);
+
+			cardRepository.save(cardMelba1);
+			cardRepository.save(cardMelba2);
+			cardRepository.save(cardNaza1);
+
 		};
 
 	}
