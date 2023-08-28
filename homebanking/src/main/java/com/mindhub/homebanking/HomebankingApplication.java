@@ -41,21 +41,24 @@ public class HomebankingApplication {
 
 			Account account = new Account("VIN001", 5000, LocalDate.now());
 			Account account1 = new Account("VIN002", 7500,LocalDate.now().plusDays(1));
-
+			Account account2 = new Account("VIN003", 10000, LocalDate.now());
 
 
 			client.addAccount(account);
 			client.addAccount(account1);
+			client1.addAccount(account2);
 
 			accountRepository.save(account);
 			accountRepository.save(account1);
+			accountRepository.save(account2);
 
 			Transaction trans = new Transaction(CREDIT, LocalDate.now(), 8000, "Mercado Pago");
 			Transaction trans1 = new Transaction(CREDIT, LocalDate.now(), 6000, "Mercado Pago");
 			Transaction trans2 = new Transaction(DEBIT, LocalDate.now(), -3000, "Personal Fibertel");
 			Transaction trans3 = new Transaction(CREDIT, LocalDate.now(), 1000, "Netflix");
 			Transaction trans4 = new Transaction(DEBIT, LocalDate.now(), -1500, "Netflix");
-
+			Transaction trans5 = new Transaction(CREDIT, LocalDate.now(), 1000, "Festival");
+			Transaction trans6 = new Transaction(DEBIT, LocalDate.now(), -1500, "Netflix");
 
 			account.addTransaction(trans);
 			account.addTransaction(trans1);
@@ -64,11 +67,16 @@ public class HomebankingApplication {
 			account1.addTransaction(trans2);
 			account1.addTransaction(trans3);
 
+			account2.addTransaction(trans5);
+			account2.addTransaction(trans6);
+
 			transactionRepository.save(trans);
 			transactionRepository.save(trans1);
 			transactionRepository.save(trans4);
 			transactionRepository.save(trans2);
 			transactionRepository.save(trans3);
+			transactionRepository.save(trans5);
+			transactionRepository.save(trans6);
 
 			Loan loanHipotecario = new Loan("Hipotecario", 500000, List.of(12,24,36,48,60));
 			Loan loanPersonal = new Loan("Personal",100000, List.of(6,12,24));

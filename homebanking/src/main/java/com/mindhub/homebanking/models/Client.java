@@ -117,4 +117,10 @@ public class Client {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public long cardCount(String cardType) {
+
+       return cards.stream()
+               .filter(card -> card.getType().name().equals(cardType)).count();
+    }
 }
