@@ -1,6 +1,7 @@
 package com.mindhub.homebanking.controllers;
 
 import com.mindhub.homebanking.dtos.AccountDTO;
+import com.mindhub.homebanking.dtos.ClientLoanDTO;
 import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.ClientRepository;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -58,6 +60,15 @@ public class AccountController {
             return new ResponseEntity<>("Esta cuenta no es tuya", HttpStatus.BAD_GATEWAY);
         }
 
+    }
+
+    @GetMapping("/clients/current/accounts")
+    public Set<AccountDTO> getCurrentAccounts(Authentication authentication){
+        Client client = clientRepository.findByEmail(authentication.getName());
+
+        return client.getAccounts().stream()
+                .map(account -> new AccountDTO(account))
+                .collect(Collectors.toSet());
     }
 
     @PostMapping("/clients/current/accounts")

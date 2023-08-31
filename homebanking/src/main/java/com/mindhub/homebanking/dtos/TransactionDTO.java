@@ -9,7 +9,7 @@ public class TransactionDTO {
     private Long id;
 
     private LocalDate date;
-    private int amount;
+    private double amount;
     private String description;
 
     public TransactionDTO(Transaction transaction) {
@@ -32,11 +32,11 @@ public class TransactionDTO {
         this.date = date;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

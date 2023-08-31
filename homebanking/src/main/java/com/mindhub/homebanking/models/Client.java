@@ -123,4 +123,12 @@ public class Client {
        return cards.stream()
                .filter(card -> card.getType().name().equals(cardType)).count();
     }
+
+    public List<Account> getAccountNumber(String account){
+        return accounts.stream().filter(a -> a.getNumber().equals(account)).collect(toList());
+    }
+
+
+
+
 }
