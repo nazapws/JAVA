@@ -43,7 +43,7 @@ public class TransactionController {
                 return new ResponseEntity<>("Se deben llenar todos los campos", HttpStatus.BAD_GATEWAY);
 
             } else {
-                if (toAccountNumber != fromAccountNumber) {
+                if (!toAccountNumber.equals(fromAccountNumber)) {
 
                     if ((accountRepository.existsByNumber(fromAccountNumber)) && (accountRepository.existsByNumber(toAccountNumber))) {
 

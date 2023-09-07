@@ -1,7 +1,6 @@
 package com.mindhub.homebanking.controllers;
 
 import com.mindhub.homebanking.dtos.AccountDTO;
-import com.mindhub.homebanking.dtos.ClientLoanDTO;
 import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.ClientRepository;
@@ -14,7 +13,6 @@ import com.mindhub.homebanking.repositories.AccountRepository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -72,7 +70,7 @@ public class AccountController {
     }
 
     @PostMapping("/clients/current/accounts")
-    public ResponseEntity<Object> getNewAccount(Long id, Authentication authentication){
+    public ResponseEntity<Object> createNewAccount(Authentication authentication){
 
         Client clientNew = clientRepository.findByEmail((authentication.getName()));
 

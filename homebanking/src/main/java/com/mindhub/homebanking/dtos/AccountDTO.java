@@ -40,7 +40,7 @@ public class AccountDTO {
         return balance;
     }
 
-    public LocalDate getDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
