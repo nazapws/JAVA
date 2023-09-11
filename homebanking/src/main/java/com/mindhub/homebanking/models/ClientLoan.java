@@ -13,7 +13,7 @@ public class ClientLoan {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name="native", strategy = "native")
     private Long id;
-    private int amount;
+    private double amount;
 
 
     private int payments;
@@ -29,11 +29,9 @@ public class ClientLoan {
     public ClientLoan(){
 
     }
-    public ClientLoan(int amount, int payments, Loan loanId, Client clientLoanId) {
+    public ClientLoan(double amount, int payments) {
         this.amount = amount;
         this.payments = payments;
-        this.loanId = loanId;
-        this.clientLoanId = clientLoanId;
 
     }
 
@@ -41,11 +39,11 @@ public class ClientLoan {
         return id;
     }
 
-   public int getAmount() {
+   public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -73,4 +71,7 @@ public class ClientLoan {
 
         this.loanId = loanId;
     }
+
+
+
 }

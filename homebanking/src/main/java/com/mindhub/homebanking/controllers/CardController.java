@@ -8,8 +8,9 @@ import com.mindhub.homebanking.models.CardType;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.CardRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.services.CardService;
+import com.mindhub.homebanking.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.quartz.QuartzTransactionManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -26,28 +27,28 @@ import static com.mindhub.homebanking.models.CardType.DEBIT;
 public class CardController {
 
     @Autowired
-    private CardRepository cardRepository;
+    private ClientService clientService;
+
     @Autowired
-    private ClientRepository clientRepository;
+    private  CardService cardService;
 
     @GetMapping("/clients/current/cards")
     public CardDTO getCurrentCards(Authentication authentication){
-        Card cards = cardRepository.findByCardHolder(authentication.getName());
-        return new CardDTO(cards);
+        return cardService.getCurrentCardsDTO(authentication);
     }
 
 
     @PostMapping("/clients/current/cards")
     public ResponseEntity<Object> createCard(CardType cardType, CardColor cardColor, Authentication authentication){
 
-        Client client = clientRepository.findByEmail(authentication.getName());
+        Client client = clientService.findByEmail(authentication.getName());
         String type = cardType.toString();
 
         if ((client.cardCount(type) < 3)) {
 
             Card card = new Card(client.getFirstName() + " " + client.getLastName(), cardType, cardColor, createNum(), createCardCvv(), LocalDate.now(), LocalDate.now().plusYears(5));
             client.addCard(card);
-            cardRepository.save(card);
+            cardService.save(card);
             return new ResponseEntity<>("Tarjeta creada", HttpStatus.ACCEPTED);
         }else{
             return  new ResponseEntity<>("No se puede tener mas de 3 tarjetas de "+cardType, HttpStatus.FORBIDDEN);
@@ -60,7 +61,7 @@ public class CardController {
 
         do {
             num = getRandomNumberUsingNextInt(100, 999);
-        } while (cardRepository.existsByCvv(num));
+        } while (cardService.existsByCvv(num));
         return num;
     }
 
@@ -71,7 +72,7 @@ public class CardController {
 
         do {
             num = getRandomNumberUsingNextInt(1000, 9999);
-        } while (cardRepository.existsByNumber(num+"-"+num+"-"+num+"-"+num));
+        } while (cardService.existsByNumber(num+"-"+num+"-"+num+"-"+num));
         return num;
     }
 

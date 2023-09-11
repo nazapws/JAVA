@@ -9,6 +9,9 @@ import com.mindhub.homebanking.models.TransactionType;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.repositories.TransactionRepository;
+import com.mindhub.homebanking.services.AccountService;
+import com.mindhub.homebanking.services.ClientService;
+import com.mindhub.homebanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,28 +27,28 @@ import java.time.LocalDate;
 public class TransactionController {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private TransactionService transactionService;
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
     @Autowired
-    private TransactionRepository transactionRepository;
+    private AccountService accountService;
 
     @Transactional
     @PostMapping("/transactions")
     public ResponseEntity<Object> createTransf(@RequestParam double amount, @RequestParam String description, @RequestParam String fromAccountNumber, @RequestParam String toAccountNumber, Authentication authentication) {
         if (authentication.getName() != null) {
 
-            Client client = clientRepository.findByEmail(authentication.getName());
-            Account accountOrigin = accountRepository.findByNumber(fromAccountNumber);
-            Account accountDestiny = accountRepository.findByNumber(toAccountNumber);
+            Client client = clientService.findByEmail(authentication.getName());
+            Account accountOrigin = accountService.findByNumber(fromAccountNumber);
+            Account accountDestiny = accountService.findByNumber(toAccountNumber);
 
             if (amount <= 0 || description.isBlank() || fromAccountNumber.isBlank() || toAccountNumber.isBlank()) {
                 return new ResponseEntity<>("Se deben llenar todos los campos", HttpStatus.BAD_GATEWAY);
 
             } else {
-                if (toAccountNumber != fromAccountNumber) {
+                if (!toAccountNumber.equals(fromAccountNumber)) {
 
-                    if ((accountRepository.existsByNumber(fromAccountNumber)) && (accountRepository.existsByNumber(toAccountNumber))) {
+                    if ((accountService.existsByNumber(fromAccountNumber)) && (accountService.existsByNumber(toAccountNumber))) {
 
 
                         if (client.getAccountNumber(fromAccountNumber)!= null ) {
@@ -57,8 +60,8 @@ public class TransactionController {
                                 accountOrigin.addTransaction(transaction1);
                                 accountDestiny.addTransaction(transaction2);
 
-                                transactionRepository.save(transaction1);
-                                transactionRepository.save(transaction2);
+                                transactionService.save(transaction1);
+                                transactionService.save(transaction2);
 
                                 double originBalance = accountOrigin.getBalance();
                                 double destinyBalance = accountDestiny.getBalance();
@@ -66,8 +69,8 @@ public class TransactionController {
                                 accountOrigin.setBalance(originBalance - amount);
                                 accountDestiny.setBalance(destinyBalance + amount);
 
-                                accountRepository.save(accountOrigin);
-                                accountRepository.save(accountDestiny);
+                                accountService.accountSave(accountOrigin);
+                                accountService.accountSave(accountDestiny);
 
                                 return new ResponseEntity<>("Transferencia realizada con éxito", HttpStatus.ACCEPTED);
                             } else {

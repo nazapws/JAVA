@@ -21,14 +21,14 @@ import static com.mindhub.homebanking.models.TransactionType.DEBIT;
 @SpringBootApplication
 public class HomebankingApplication {
 
-	@Autowired
-	private PasswordEncoder passwordEnconder;
+	//@Autowired
+	//private PasswordEncoder passwordEnconder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(HomebankingApplication.class, args);
 	}
 
-	@Bean
+	/* @Bean
 	public CommandLineRunner initData(CardRepository cardRepository, ClientLoanRepository clientLoanRepository, LoanRepository loanRepository, ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository){
 		return (args) -> {
 			Client client = new Client("Melba", "Morel", "melba@mindhub.com", passwordEnconder.encode("M1"));
@@ -78,19 +78,28 @@ public class HomebankingApplication {
 			transactionRepository.save(trans5);
 			transactionRepository.save(trans6);
 
-			Loan loanHipotecario = new Loan("Hipotecario", 500000, List.of(12,24,36,48,60));
-			Loan loanPersonal = new Loan("Personal",100000, List.of(6,12,24));
-			Loan loanAutomotriz = new Loan("Automotriz", 300000, List.of(6,12,24,36));
+			Loan loanHipotecario = new Loan("Hipotecario", 500000.00, List.of(12,24,36,48,60));
+			Loan loanPersonal = new Loan("Personal",100000.00, List.of(6,12,24));
+			Loan loanAutomotriz = new Loan("Automotriz", 300000.00, List.of(6,12,24,36));
 
 			loanRepository.save(loanPersonal);
 			loanRepository.save(loanHipotecario);
 			loanRepository.save(loanAutomotriz);
 
 
-			ClientLoan loanMelba = new ClientLoan(400000, 60, loanHipotecario, client);
-			ClientLoan loanMelba1 = new ClientLoan(50000, 12, loanPersonal, client);
-			ClientLoan loanNaza = new ClientLoan(100000, 24, loanPersonal, client1);
-			ClientLoan loanNaza1 = new ClientLoan(200000, 36, loanAutomotriz, client1);
+			ClientLoan loanMelba = new ClientLoan(400000, 60);
+			ClientLoan loanMelba1 = new ClientLoan(50000, 12);
+			ClientLoan loanNaza = new ClientLoan(100000, 24);
+			ClientLoan loanNaza1 = new ClientLoan(200000, 36);
+
+			client.addClientLoan(loanMelba);
+			client.addClientLoan(loanMelba1);
+			loanAutomotriz.addClientLoan(loanMelba);
+			loanHipotecario.addClientLoan(loanMelba1);
+			client1.addClientLoan(loanNaza);
+			client1.addClientLoan(loanNaza1);
+			loanPersonal.addClientLoan(loanNaza);
+			loanAutomotriz.addClientLoan(loanNaza1);
 
 			clientLoanRepository.save(loanMelba);
 			clientLoanRepository.save(loanMelba1);
@@ -111,7 +120,7 @@ public class HomebankingApplication {
 
 		};
 
-	}
+	} */
 
 
 

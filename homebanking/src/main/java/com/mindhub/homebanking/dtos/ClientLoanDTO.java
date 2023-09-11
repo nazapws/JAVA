@@ -9,7 +9,7 @@ public class ClientLoanDTO {
 
     private Long idloan;
     private String name;
-    private int amount;
+    private double amount;
     private int payments;
 
     public ClientLoanDTO(ClientLoan clientLoan) {
@@ -32,7 +32,7 @@ public class ClientLoanDTO {
         return name;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
