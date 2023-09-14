@@ -103,8 +103,6 @@ import static org.hamcrest.Matchers.*;
         @Test
         public void cardExist(){
 
-
-
             List<Card> cards = cardRepository.findAll();
             assertThat(cards, is(not(empty())));
 
