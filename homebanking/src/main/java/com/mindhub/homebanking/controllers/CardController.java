@@ -21,6 +21,7 @@ import java.util.Random;
 
 import static com.mindhub.homebanking.models.CardType.CREDIT;
 import static com.mindhub.homebanking.models.CardType.DEBIT;
+import static com.mindhub.homebanking.utils.CardUtils.*;
 
 @RestController
 @RequestMapping("/api")
@@ -46,7 +47,7 @@ public class CardController {
 
         if ((client.cardCount(type) < 3)) {
 
-            Card card = new Card(client.getFirstName() + " " + client.getLastName(), cardType, cardColor, createNum(), createCardCvv(), LocalDate.now(), LocalDate.now().plusYears(5));
+            Card card = new Card(client.getFirstName() + " " + client.getLastName(), cardType, cardColor, createCardNumberUnique(), createCardCvvUnique(), LocalDate.now(), LocalDate.now().plusYears(5));
             client.addCard(card);
             cardService.save(card);
             return new ResponseEntity<>("Tarjeta creada", HttpStatus.ACCEPTED);
@@ -56,33 +57,27 @@ public class CardController {
 
     }
 
-    public int createCardCvv() {
+    public int createCardCvvUnique() {
         int num;
 
         do {
-            num = getRandomNumberUsingNextInt(100, 999);
+            num = createCardCvv();
         } while (cardService.existsByCvv(num));
         return num;
     }
 
 
+      public String createCardNumberUnique() {
+            String number;
+            do {
+                number = createCardNum();
+            } while (cardService.existsByNumber(number));
 
-    public int createCardNum() {
-        int num;
+            return number;
+      }
 
-        do {
-            num = getRandomNumberUsingNextInt(1000, 9999);
-        } while (cardService.existsByNumber(num+"-"+num+"-"+num+"-"+num));
-        return num;
-    }
 
-    public String createNum() {
-        String number = createCardNum()+"-"+createCardNum()+"-"+createCardNum()+"-"+createCardNum();
-        return number;
-    }
-    public int getRandomNumberUsingNextInt(int min, int max) {
-        Random random = new Random();
-        return random.nextInt(max - min) + min;
-    }
+
+
 
 }

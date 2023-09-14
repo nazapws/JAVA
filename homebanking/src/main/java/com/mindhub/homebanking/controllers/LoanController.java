@@ -75,6 +75,7 @@ public class LoanController {
 
                                     double balance = accountDestiny.getBalance();
                                     accountDestiny.setBalance(balance + loanApplicationDTO.getAmount());
+                                    accountService.accountSave(accountDestiny);
 
                                     return new ResponseEntity<>("Préstamo generado", HttpStatus.ACCEPTED);
                                 }else{
